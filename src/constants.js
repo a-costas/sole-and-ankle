@@ -14,5 +14,6 @@ export const COLORS = {
 export const WEIGHTS = {
   normal: 500,
   medium: 600,
+  mediumBold: 700,
   bold: 800,
 };

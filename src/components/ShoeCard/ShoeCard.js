@@ -36,14 +36,27 @@ const ShoeCard = ({
       <Wrapper>
         <ImageWrapper>
           <Image alt="" src={imageSrc} />
+          {variant === 'on-sale' && (
+            <SalePrice className={variant}>Sale</SalePrice>
+          )}  
+          {variant === 'new-release' && (
+            <SalePrice className={variant}>Just Released!</SalePrice>
+          )}  
         </ImageWrapper>
         <Spacer size={12} />
         <Row>
           <Name>{name}</Name>
-          <Price>{formatPrice(price)}</Price>
+          {variant === 'on-sale' ? (
+            <Price className="strikethrough">{formatPrice(price)}</Price>
+          ) : (
+            <Price>{formatPrice(price)}</Price>
+          )} 
         </Row>
         <Row>
           <ColorInfo>{pluralize('Color', numOfColors)}</ColorInfo>
+          {variant === 'on-sale' && (
+            <Price className={variant}>{formatPrice(salePrice)}</Price>
+          )} 
         </Row>
       </Wrapper>
     </Link>
@@ -55,16 +68,25 @@ const Link = styled.a`
   color: inherit;
 `;
 
-const Wrapper = styled.article``;
+const Wrapper = styled.article`
+  display: flex;
+  flex-direction: column;
+`;
 
 const ImageWrapper = styled.div`
   position: relative;
 `;
 
-const Image = styled.img``;
+const Image = styled.img`
+  border-radius: 16px 16px 4px 4px;
+  max-width: 340px;
+`;
 
 const Row = styled.div`
   font-size: 1rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 `;
 
 const Name = styled.h3`
@@ -72,7 +94,15 @@ const Name = styled.h3`
   color: ${COLORS.gray[900]};
 `;
 
-const Price = styled.span``;
+const Price = styled.span`
+  &.on-sale {
+    color: ${COLORS.primary};
+  }
+
+  &.strikethrough {
+    text-decoration: line-through;
+  }
+`;
 
 const ColorInfo = styled.p`
   color: ${COLORS.gray[700]};
@@ -80,7 +110,21 @@ const ColorInfo = styled.p`
 
 const SalePrice = styled.span`
   font-weight: ${WEIGHTS.medium};
-  color: ${COLORS.primary};
+  border-radius: 2px;
+  color: ${COLORS.white};
+  position: absolute;
+  top: 12px;  
+  right: -4px;
+  padding: 8px 10px 8px 8px;
+
+  &.on-sale {
+    background-color: ${COLORS.primary};
+    width: 50px;
+  }
+
+  &.new-release {
+    background-color: ${COLORS.secondary}
+  }
 `;
 
 export default ShoeCard;
